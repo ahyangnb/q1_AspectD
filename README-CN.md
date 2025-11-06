@@ -3,7 +3,8 @@ Language:  中文简体 | [English](README.md)
 # Beike_AspectD
 This is a fork of [AspectD](https://github.com/XianyuTech/aspectd).
 
-Beike_AspectD是一个dart面向切面库。闲鱼的AspectD为开发者提供了call/execute/inject三种方式对代码进行操作。除此之外，Beike_AspectD还提供了：
+Q1_AspectD是一个dart面向切面库。闲鱼的AspectD为开发者提供了call/execute/inject三种方式对代码进行操作。除此之外，
+Q1_AspectD还提供了：
 
 - ✅  Add语法支持为class添加方法；
 - ✅  FieldGet语法支持更换变量获取；
@@ -15,12 +16,13 @@ Beike_AspectD是一个dart面向切面库。闲鱼的AspectD为开发者提供�
 Fork 来自 `https://github.com/LianjiaTech/Beike_AspectD` ，下面是更新日志:
 * @ahyangnb: 修复 flutter 3.10.5 的空安全错误，对比分支`Beike_AspectD/blob/3.10.5`.
 
-# Beike_AspectD有哪些应用场景?
-贝壳已经在一些库中使用Beike_AspectD.
-- 埋点库
-- Json模型转换
+# Q1_AspectD有哪些应用场景?
+- 网络请求【无生成代码形式】
+- 埋点库【无代码侵入】
+- Json模型转换【无生成代码形式】
 - 性能监控
 - Flutter框架问题修复等
+- 真实场景自动化测试并且校验数据准确性。
 
 # 安装
 
@@ -118,7 +120,7 @@ Field get可以被用来替换对于某个属性的调用.
 比如，MyApp有个属性field，通过上面代码，调用MyApp中field属性的地方都会返回字符串'Beike_AspectD'。
 
 ## 版本支持
-目前Beike_AspectD已经支持Flutter 1.22.4，2.2.2,2.5.3, 2.10.4 和 3.0.0.
+目前Q1_AspectD已经支持Flutter 1.22.4，2.2.2,2.5.3, 2.10.4, 3.0.0, 3.10.5.
 
 ## 如何调试
 见[调试](doc/如何调试.md)
@@ -134,4 +136,24 @@ Field get可以被用来替换对于某个属性的调用.
 
 # 联系
 
-如果你有任何问题，可以提一个issue。或者联系xiaopeng015@ke.com。
+如果你有任何问题，可以提一个issue。或者联系微信q1666655。
+
+# 相关学习文章
+Flutter编译打包系统完全解读
+https://developer.aliyun.com/article/761239
+
+浅谈 Flutter 编译原理：
+https://juejin.cn/post/7093388612078665764
+
+aspect_frontend_server【另一个版本的实现方式】：
+https://github.com/ahyangnb/aspect_frontend_server
+
+记录对flutter aspectd的优化与flutter2.5的适配修改：
+https://juejin.cn/post/7034720269360955405
+
+Flutter全埋点方案详解：
+https://juejin.cn/post/7216604612404723770
+
+重磅开源|AOP for Flutter开发利器——AspectD：
+https://juejin.cn/post/6844903870280237064
+
