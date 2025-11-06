@@ -7,8 +7,12 @@ Beike_AspectD is an aop framework for dart. AspectD has provide developers call/
 
 - ✅  Support add grammer to add function to classes.
 - ✅  Support field get grammer to exchange the field get call.
-- ✅  Support null-safety(null-safety/2.5.3 branch).
+- ✅  Support null-safety(null-safety/3.10.5 branch).
 - ✅  Support flutter web.
+
+# Notice
+Fork from `https://github.com/LianjiaTech/Beike_AspectD` and update Log:
+* @ahyangnb: Fix nullsafety error in flutter 3.10.5 compare to `Beike_AspectD/blob/3.10.5`.
 
 # What can we use Beike_AspectD for?
 Beike has used Beike_AspectD in many packages.
@@ -32,7 +36,7 @@ Next time when you build your project, flutter tools will build automatically.
 dependencies:
    beike_aspectd:
      git:
-         url: https://github.com/LianjiaTech/Beike_AspectD.git
+         url: https://github.com/ahyangnb/q1_AspectD.git
          ref: 3.10.5
 ```
 

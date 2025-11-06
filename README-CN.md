@@ -11,6 +11,10 @@ Beike_AspectD是一个dart面向切面库。闲鱼的AspectD为开发者提供�
 - ✅  支持Flutter for Web；
 - ✅  其他的一些问题修复.
 
+# 注意
+Fork 来自 `https://github.com/LianjiaTech/Beike_AspectD` ，下面是更新日志:
+* @ahyangnb: 修复 flutter 3.10.5 的空安全错误，对比分支`Beike_AspectD/blob/3.10.5`.
+
 # Beike_AspectD有哪些应用场景?
 贝壳已经在一些库中使用Beike_AspectD.
 - 埋点库
@@ -33,7 +37,7 @@ rm bin/cache/flutter_tools.stamp
 dependencies:
   beike_aspectd:
     git:
-        url: https://github.com/LianjiaTech/Beike_AspectD.git
+        url: https://github.com/ahyangnb/q1_AspectD.git
         ref: 3.10.5
 ```
 
