@@ -157,3 +157,11 @@ https://juejin.cn/post/7216604612404723770
 重磅开源|AOP for Flutter开发利器——AspectD：
 https://juejin.cn/post/6844903870280237064
 
+Beike AspectD的原理及运用【来自作者-肖鹏】：
+https://cloud.tencent.com/developer/news/715655
+
+Flutter 代码生成技术 [APT 与 AOP] 适用场景与对比【来自Flutter GDE - Nayuta】：
+https://juejin.cn/post/7062319340464373791
+
+Flutter Aop方案之闲鱼AspectD(1)：
+https://zhuanlan.zhihu.com/p/266774471
