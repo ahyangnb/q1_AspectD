@@ -24,13 +24,12 @@ import '../transformer/plugins/aop/aop_transformer_wrapper.dart';
 /// Wrapper around [FrontendCompiler] that adds [widgetCreatorTracker] kernel
 /// transformation to the compilation.
 class _FlutterFrontendCompiler implements frontend.CompilerInterface {
-
   _FlutterFrontendCompiler(StringSink? output,
       {bool? unsafePackageSerialization,
-        bool? useDebuggerModuleNames,
-        bool? emitDebugMetadata,
-       frontend.ProgramTransformer? transformer,
-        this.aopTransform = false})
+      bool? useDebuggerModuleNames,
+      bool? emitDebugMetadata,
+      frontend.ProgramTransformer? transformer,
+      this.aopTransform = false})
       : _compiler = frontend.FrontendCompiler(output,
             transformer: transformer,
             unsafePackageSerialization: unsafePackageSerialization);
@@ -181,7 +180,8 @@ Future<int> starter(
         ]);
         compiler ??= _FlutterFrontendCompiler(
           output,
-          transformer: ToStringTransformer(transformer, deleteToStringPackageUris),
+          transformer:
+              ToStringTransformer(transformer, deleteToStringPackageUris),
         );
 
         await compiler.compile(input, options);
@@ -206,7 +206,7 @@ Future<int> starter(
       emitDebugMetadata: options['experimental-emit-debug-metadata'] as bool,
       unsafePackageSerialization:
           options['unsafe-package-serialization'] as bool,
-      aopTransform: options['aop'].toString() == '1' ? true : false);
+      aopTransform: options['aop'].toString() == '1');
 
   if (options.rest.isNotEmpty) {
     return await compiler.compile(options.rest[0], options) ? 0 : 254;
@@ -268,10 +268,7 @@ class ToStringVisitor extends RecursiveVisitor<void> {
         !_hasKeepAnnotation(node)) {
       node.function.body?.replaceWith(
         ReturnStatement(
-          SuperMethodInvocation(
-            node.name,
-            Arguments(<Expression>[]),node
-          ),
+          SuperMethodInvocation(node.name, Arguments(<Expression>[]), node),
         ),
       );
     }

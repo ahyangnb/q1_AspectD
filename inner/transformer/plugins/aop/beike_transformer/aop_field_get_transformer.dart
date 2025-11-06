@@ -35,19 +35,32 @@ class AopFieldGetImplTransformer extends Transformer {
 
     // importUri = _curLibrary!.importUri.toString();
 
-    importUri = node?.targetReference?.canonicalName?.reference?.canonicalName
+    importUri = node.targetReference.canonicalName?.reference?.canonicalName
         ?.nonRootTop?.name;
-    clsName = node?.targetReference?.canonicalName?.parent?.parent?.name;
-    fieldName = node?.targetReference?.canonicalName?.name;
+    clsName = node.targetReference.canonicalName?.parent?.parent?.name;
+    fieldName = node.targetReference.canonicalName?.name;
 
-    final AopItemInfo aopItemInfo = _filterAopItemInfo(
-        _aopItemInfoList, importUri!, clsName!, fieldName!, true)!;
+    final AopItemInfo? aopItemInfo = _filterAopItemInfo(
+        _aopItemInfoList, importUri, clsName, fieldName, true);
 
     if (aopItemInfo != null) {
+      final Procedure aopProcedure = aopItemInfo.aopMember as Procedure;
+      
+      // Ensure library dependency is added
+      if (_curLibrary != null && aopProcedure.parent?.parent is Library) {
+        final Library aopLibrary = aopProcedure.parent!.parent as Library;
+        AopUtils.insertLibraryDependency(_curLibrary!, aopLibrary);
+      }
+      
+      // Ensure procedure reference is resolved
+      if (aopProcedure.reference.node == null) {
+        aopProcedure.reference.node = aopProcedure;
+      }
+      
       final Arguments redirectArguments = Arguments.empty();
       redirectArguments.positional.add(NullLiteral());
       final StaticInvocation staticInvocationNew =
-          StaticInvocation(aopItemInfo.aopMember as Procedure, redirectArguments);
+          StaticInvocation.byReference(aopProcedure.reference, redirectArguments);
 
       return staticInvocationNew;
     }
@@ -63,16 +76,29 @@ class AopFieldGetImplTransformer extends Transformer {
     clsName = _curClass!.name;
     fieldName = node.name.text;
 
-    final AopItemInfo aopItemInfo = _filterAopItemInfo(
-        _aopItemInfoList, importUri, clsName, fieldName, false)!;
+    final AopItemInfo? aopItemInfo = _filterAopItemInfo(
+        _aopItemInfoList, importUri, clsName, fieldName, false);
 
     if (aopItemInfo != null) {
+      final Procedure aopProcedure = aopItemInfo.aopMember as Procedure;
+      
+      // Ensure library dependency is added
+      if (_curLibrary != null && aopProcedure.parent?.parent is Library) {
+        final Library aopLibrary = aopProcedure.parent!.parent as Library;
+        AopUtils.insertLibraryDependency(_curLibrary!, aopLibrary);
+      }
+      
+      // Ensure procedure reference is resolved
+      if (aopProcedure.reference.node == null) {
+        aopProcedure.reference.node = aopProcedure;
+      }
+      
       final Arguments redirectArguments = Arguments.empty();
 
       redirectArguments.positional.add(NullLiteral());
 
       final StaticInvocation staticInvocationNew =
-          StaticInvocation(aopItemInfo.aopMember as Procedure, redirectArguments);
+          StaticInvocation.byReference(aopProcedure.reference, redirectArguments);
 
       return staticInvocationNew;
     }
@@ -82,7 +108,7 @@ class AopFieldGetImplTransformer extends Transformer {
 
   //Filter AopInfoMap for specific callsite.
   AopItemInfo? _filterAopItemInfo(List<AopItemInfo> aopItemInfoList,
-      String importUri, String clsName, String fieldName, bool isStatic) {
+      String? importUri, String? clsName, String? fieldName, bool isStatic) {
     //Reverse sorting so that the newly added Aspect might override the older ones.
     importUri ??= '';
     clsName ??= '';
@@ -118,12 +144,15 @@ class AopFieldGetImplTransformer extends Transformer {
   //Will create stub and insert call branch in proceed.
   void createPointcutStubProcedure(AopItemInfo aopItemInfo, String stubKey,
       Class pointCutClass, Statement bodyStatements, bool shouldReturn) {
-    final Procedure procedure = AopUtils.createStubProcedure(
+    final Procedure? procedure = AopUtils.createStubProcedure(
         Name(stubKey, AopUtils.pointCutProceedProcedure!.name.library),
         aopItemInfo,
         AopUtils.pointCutProceedProcedure as Procedure,
         bodyStatements,
         shouldReturn);
+    if(procedure == null) {
+      return;
+    }
     pointCutClass.procedures.add(procedure);
     AopUtils.insertProceedBranch(pointCutClass, procedure, shouldReturn);
   }

@@ -223,11 +223,11 @@ class AopUtils {
 
   static Class? findClassOfNode(TreeNode node) {
     TreeNode? temp = node;
-    while (temp != null && !(temp is Class)) {
+    while (temp != null && temp is! Class) {
       temp = temp.parent;
     }
 
-    return temp as Class;
+    return temp is Class ? temp : null;
   }
 
   static Field? findFieldForClassWithName(Class cls, String fieldName) {
@@ -745,8 +745,11 @@ class AopUtils {
     return sourceInfo;
   }
 
-  static Procedure createStubProcedure(Name methodName, AopItemInfo aopItemInfo,
-      Procedure referProcedure, Statement bodyStatements, bool shouldReturn) {
+  static Procedure? createStubProcedure(Name methodName, AopItemInfo aopItemInfo,
+      Procedure? referProcedure, Statement bodyStatements, bool shouldReturn) {
+    if(referProcedure == null) {
+      return null;
+    }
     final FunctionNode functionNode = FunctionNode(bodyStatements,
         typeParameters: deepCopyASTNodes<TypeParameter>(
             referProcedure.function.typeParameters),

@@ -254,7 +254,11 @@ class AopExecuteImplTransformer extends Transformer {
     if (parent is Library) {
       parent.procedures.add(originalStubConstructor as Procedure);
     } else if (parent is Class) {
-      parent.procedures.add(originalStubConstructor as Procedure);
+      if(originalStubConstructor is Procedure) {
+        parent.procedures.add(originalStubConstructor);
+      } else if(originalStubConstructor is Constructor) {
+        parent.constructors.add(originalStubConstructor);
+      }
     }
 
     functionNode.body = createPointcutCallFromOriginal(
@@ -276,13 +280,16 @@ class AopExecuteImplTransformer extends Transformer {
         originalStubConstructor as Constructor,
         AopUtils.concatArguments4PointcutStubCall(constructor, aopItemInfo),
         isConst: originalStubConstructor.isConst);
-    final Procedure stubProcedureNew = AopUtils.createStubProcedure(
+    final Procedure? stubProcedureNew = AopUtils.createStubProcedure(
         Name(stubKey, AopUtils.pointCutProceedProcedure!.name.library),
         aopItemInfo,
         AopUtils.pointCutProceedProcedure as Procedure,
         AopUtils.createProcedureBodyWithExpression(
             constructorInvocation, shouldReturn),
         shouldReturn);
+    if(stubProcedureNew == null) {
+      return;
+    }
     pointcutClass.procedures.add(stubProcedureNew);
     stubProcedureNew.parent = pointcutClass;
     AopUtils.insertProceedBranch(pointcutClass, stubProcedureNew, shouldReturn);
@@ -319,7 +326,7 @@ class AopExecuteImplTransformer extends Transformer {
     AopUtils.kPrimaryKeyAopMethod++;
 
     //目标新建stub函数，方便完成目标->aopstub->目标stub链路
-    final Procedure originalStubProcedure = AopUtils.createStubProcedure(
+    final Procedure? originalStubProcedure = AopUtils.createStubProcedure(
         Name(originalProcedure.name.text + '_' + stubKey,
             originalProcedure.name.library),
         aopItemInfo,
@@ -327,7 +334,9 @@ class AopExecuteImplTransformer extends Transformer {
         body,
         shouldReturn);
     final TreeNode parent = originalProcedure.parent as TreeNode;
-
+    if(originalStubProcedure == null) {
+      return;
+    }
     originalStubProcedure.parent = parent;
     late String parentIdentifier;
     if (parent is Library) {
@@ -358,13 +367,16 @@ class AopExecuteImplTransformer extends Transformer {
             originalProcedure, aopItemInfo),
         isConst: originalStubProcedure.isConst);
 
-    final Procedure stubProcedureNew = AopUtils.createStubProcedure(
+    final Procedure? stubProcedureNew = AopUtils.createStubProcedure(
         Name(stubKey, AopUtils.pointCutProceedProcedure!.name.library),
         aopItemInfo,
         AopUtils.pointCutProceedProcedure as Procedure,
         AopUtils.createProcedureBodyWithExpression(
             staticInvocation, shouldReturn),
         shouldReturn);
+    if(stubProcedureNew == null) {
+      return;
+    }
     pointcutClass.procedures.add(stubProcedureNew);
     stubProcedureNew.parent = pointcutClass;
     AopUtils.insertProceedBranch(pointcutClass, stubProcedureNew, shouldReturn);
@@ -386,13 +398,16 @@ class AopExecuteImplTransformer extends Transformer {
     AopUtils.kPrimaryKeyAopMethod++;
 
     //目标新建stub函数，方便完成目标->aopstub->目标stub链路
-    final Procedure originalStubProcedure = AopUtils.createStubProcedure(
+    final Procedure? originalStubProcedure = AopUtils.createStubProcedure(
         Name(originalProcedure.name.text + '_' + stubKey,
             originalProcedure.name.library),
         aopItemInfo,
         originalProcedure,
         body,
         shouldReturn);
+    if(originalStubProcedure == null) {
+      return;
+    }
     originalClass.procedures.add(originalStubProcedure);
     originalStubProcedure.parent = originalClass;
     functionNode.body = createPointcutCallFromOriginal(
@@ -442,13 +457,16 @@ class AopExecuteImplTransformer extends Transformer {
     //     functionType: (originalStubProcedure.getterType as FunctionType)
     //         .withoutTypeParameters);
 
-    final Procedure stubProcedureNew = AopUtils.createStubProcedure(
+    final Procedure? stubProcedureNew = AopUtils.createStubProcedure(
         Name(stubKey, AopUtils.pointCutProceedProcedure!.name.library),
         aopItemInfo,
         AopUtils.pointCutProceedProcedure as Procedure,
         AopUtils.createProcedureBodyWithExpression(
             mockedInvocation, shouldReturn),
         shouldReturn);
+    if(stubProcedureNew == null) {
+      return;
+    }
     pointcutClass.procedures.add(stubProcedureNew);
     stubProcedureNew.parent = pointcutClass;
     AopUtils.insertProceedBranch(pointcutClass, stubProcedureNew, shouldReturn);

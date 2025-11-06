@@ -1,6 +1,7 @@
 import 'dart:io';
 
 void main(List<String> args) async {
+  print('[inner\snapshot.dart] Start generating snapshot...');
   final String dartPath = Platform.executable;
 
   List<String> command = <String>[

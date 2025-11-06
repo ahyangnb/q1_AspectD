@@ -418,7 +418,7 @@ class AopInjectImplTransformer extends Transformer {
   }
 
   void mergeTransform() {
-    late AopItemInfo lastInfo;
+     AopItemInfo? lastInfo;
 
     final List<AopItemInfo> removeList = [];
 

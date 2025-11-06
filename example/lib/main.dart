@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:beike_aspectd/aspectd.dart';
+// import 'package:beike_aspectd/aspectd.dart';
 // ignore: unused_import
 import 'package:example/hook_example.dart';
 import 'package:flutter/material.dart';
@@ -198,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           test();
           // Receiver.tap();
-          _incrementCounter();
+          // _incrementCounter();
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),

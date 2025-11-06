@@ -178,7 +178,7 @@ class AopAddImplTransformer extends RecursiveVisitor<void> {
                 shouldAdd = true;
                 break;
               }
-              superClazz = superClazz!.superclass!;
+              superClazz = superClazz.superclass;
             }
           }
 
